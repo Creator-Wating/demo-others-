@@ -807,7 +807,7 @@ int bwLabel(Mat& src, Mat& dst, vector<Feather>& featherList, int choose)
 	dst = src.clone();//将原图像克隆至目的图像
 	for (int i = 0; i < rows; i++)
 	{
-		uchar* pRow = dst.ptr<uchar>(i);
+		uchar* pRow = dst.ptr<uchar>(i);//将行矩阵储存进pRow中
 		for (int j = 0; j < cols; j++)
 		{
 			if (pRow[j] == 255)
@@ -815,16 +815,16 @@ int bwLabel(Mat& src, Mat& dst, vector<Feather>& featherList, int choose)
 				//stacknum = 0;
 				area = 0;
 				labelValue++; // labelValue最大为254，最小为1.
-				seed = Point(j, i); // Point（横坐标，纵坐标）
+				seed = Point(j, i); // Point（横坐标，纵坐标）,将所有黑色点作为区域生长的种子
 				dst.at<uchar>(seed) = labelValue;
-				pointStack.push(seed);
+				pointStack.push(seed);//将种子入栈
 				area++;
 				//stacknum++;
-				leftBoundary = seed.x;
+				leftBoundary = seed.x;//设置上下左右边界
 				rightBoundary = seed.x;
 				topBoundary = seed.y;
 				bottomBoundary = seed.y;
-				while (!pointStack.empty())
+				while (!pointStack.empty())//当堆栈不为空时
 				{
 					neighbor = Point(seed.x + 1, seed.y);
 					if ((seed.x != (cols - 1)) && (dst.at<uchar>(neighbor) == 255))
